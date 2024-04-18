@@ -4,8 +4,8 @@ CREATE DATABASE IF NOT EXISTS asgard;
 USE asgard;
 
 -- Tabla de Clientes
-CREATE TABLE tbClientes(
-   idCliente INT PRIMARY KEY,
+CREATE TABLE tb_Clientes(
+   id_Cliente INT PRIMARY KEY,
    nombres_Cliente VARCHAR(100) NOT NULL,
    apellidos_Cliente VARCHAR(100) NOT NULL,
    correo_electronico VARCHAR(100) UNIQUE,
@@ -15,18 +15,18 @@ CREATE TABLE tbClientes(
 );
 
 -- Tabla de Documentos Emitidos
-CREATE TABLE tbDocumentos_emitidos(
-   idDocumento INT PRIMARY KEY,
+CREATE TABLE tb_Documentos_emitidos(
+   id_Documento INT PRIMARY KEY,
    tipo_Documento VARCHAR(50) NOT NULL,
    fecha_emision DATETIME NOT NULL,
    idCliente INT,
-   FOREIGN KEY (idCliente) REFERENCES tbClientes(idCliente)
+   FOREIGN KEY (id_Cliente) REFERENCES tb_Clientes(id_Cliente)
    -- Información adicional del documento según los requisitos de MH
 );
 
 -- Tabla de Servicios
-CREATE TABLE tbServicios(
-   idServicio INT PRIMARY KEY,
+CREATE TABLE tb_Servicios(
+   id_Servicio INT PRIMARY KEY,
    nombre_Servicio VARCHAR(100) NOT NULL,
    descripcion VARCHAR(255),
    tipo_servicio ENUM('Credito Fiscal', 'Factura Comercial', 'Otro') NOT NULL,
@@ -36,17 +36,17 @@ CREATE TABLE tbServicios(
 );
 
 -- Tabla de Relación entre Clientes y Servicios
-CREATE TABLE tbCliente_servicio(
-   idCliente INT,
-   idServicio INT,
-   PRIMARY KEY (idCliente, idServicio),
-   FOREIGN KEY (idCliente) REFERENCES tbClientes(idCliente),
-   FOREIGN KEY (idServicio) REFERENCES tbServicios(idServicio)
+CREATE TABLE tb_Cliente_servicio(
+   id_Cliente INT,
+   id_Servicio INT,
+   PRIMARY KEY (id_Cliente, id_Servicio),
+   FOREIGN KEY (id_Cliente) REFERENCES tb_Clientes(id_Cliente),
+   FOREIGN KEY (id_Servicio) REFERENCES tb_Servicios(id_Servicio)
 );
 
 -- Tabla de Empleados
-CREATE TABLE tbEmpleados(
-   idEmpleado INT PRIMARY KEY,
+CREATE TABLE tb_Empleados(
+   id_Empleado INT PRIMARY KEY,
    nombres_Empleado VARCHAR(100) NOT NULL,
    apellidos_Empleado VARCHAR(100) NOT NULL,
    dui_Empleado VARCHAR(100) UNIQUE,
@@ -56,18 +56,18 @@ CREATE TABLE tbEmpleados(
 );
 
 -- Tabla de Relación entre Empleados y Clientes
-CREATE TABLE tbEmpleado_cliente(
-   idEmpleado INT,
-   idCliente INT,
-   PRIMARY KEY (idEmpleado, idCliente),
-   FOREIGN KEY (idEmpleado) REFERENCES tbEmpleados(idEmpleado),
-   FOREIGN KEY (idCliente) REFERENCES tbClientes(idCliente)
+CREATE TABLE tb_Empleado_cliente(
+   id_Empleado INT,
+   id_Cliente INT,
+   PRIMARY KEY (id_Empleado, id_Cliente),
+   FOREIGN KEY (id_Empleado) REFERENCES tb_Empleados(id_Empleado),
+   FOREIGN KEY (id_Cliente) REFERENCES tb_Clientes(id_Cliente)
 );
 
 -- Tabla de Comprobante de Crédito Fiscal
-CREATE TABLE tbComprobanteCreditoFiscal (
-   idComprobante INT PRIMARY KEY AUTO_INCREMENT,
-   idCliente INT,
+CREATE TABLE tb_ComprobanteCreditoFiscal (
+   id_Comprobante INT PRIMARY KEY AUTO_INCREMENT,
+   id_Cliente INT,
    NIT VARCHAR(100) UNIQUE,
    nombre VARCHAR(100) NOT NULL,
    NRC VARCHAR(100),
@@ -78,14 +78,14 @@ CREATE TABLE tbComprobanteCreditoFiscal (
    email VARCHAR(100),
    telefono VARCHAR(15),
    DUI VARCHAR(10),
-   FOREIGN KEY (idCliente) REFERENCES tbClientes(idCliente)
+   FOREIGN KEY (id_Cliente) REFERENCES tb_Clientes(id_Cliente)
    -- Otra información del comprobante
 );
 
 -- Tabla de Factura Sujeto Excluido
-CREATE TABLE tbFacturaSujetoExcluido (
-   idFactura INT PRIMARY KEY AUTO_INCREMENT,
-   idCliente INT,
+CREATE TABLE tb_FacturaSujetoExcluido (
+   id_Factura INT PRIMARY KEY AUTO_INCREMENT,
+   id_Cliente INT,
    NIT_cliente VARCHAR(100),
    nombre_cliente VARCHAR(100) NOT NULL,
    direccion_cliente VARCHAR(255),
@@ -94,18 +94,18 @@ CREATE TABLE tbFacturaSujetoExcluido (
    email_cliente VARCHAR(100),
    telefono_cliente VARCHAR(15),
    DUI_cliente VARCHAR(10),
-   idServicio INT,
+   id_Servicio INT,
    tipo_servicio ENUM('Credito Fiscal', 'Factura Consumidor Final', 'Factura Sujeto Excluido') NOT NULL,
    monto DECIMAL(10, 2),
    fecha_emision DATETIME,
-   FOREIGN KEY (idCliente) REFERENCES tbClientes(idCliente),
-   FOREIGN KEY (idServicio) REFERENCES tbServicios(idServicio)
+   FOREIGN KEY (id_Cliente) REFERENCES tb_Clientes(id_Cliente),
+   FOREIGN KEY (id_Servicio) REFERENCES tb_Servicios(id_Servicio)
 );
 
 -- Tabla de Factura de Consumidor Final
-CREATE TABLE tbFacturaConsumidorFinal (
-   idFactura INT PRIMARY KEY AUTO_INCREMENT,
-   idCliente INT,
+CREATE TABLE tb_FacturaConsumidorFinal (
+   id_Factura INT PRIMARY KEY AUTO_INCREMENT,
+   id_Cliente INT,
    NIT_cliente VARCHAR(100),
    nombre_cliente VARCHAR(100) NOT NULL,
    direccion_cliente VARCHAR(255),
@@ -114,68 +114,68 @@ CREATE TABLE tbFacturaConsumidorFinal (
    email_cliente VARCHAR(100),
    telefono_cliente VARCHAR(15),
    DUI_cliente VARCHAR(10),
-   idServicio INT,
+   id_Servicio INT,
    tipo_servicio ENUM('Credito Fiscal', 'Factura Consumidor Final', 'Factura Sujeto Excluido') NOT NULL,
    monto DECIMAL(10, 2),
    fecha_emision DATETIME,
-   FOREIGN KEY (idCliente) REFERENCES tbClientes(idCliente),
-   FOREIGN KEY (idServicio) REFERENCES tbServicios(idServicio)
+   FOREIGN KEY (id_Cliente) REFERENCES tb_Clientes(id_Cliente),
+   FOREIGN KEY (id_Servicio) REFERENCES tb_Servicios(id_Servicio)
 );
 
 -- Verifica si el servicio de Credito Fiscal existe en tbServicios
-SELECT * FROM tbServicios WHERE tipo_servicio = 'Credito Fiscal';
+SELECT * FROM tb_Servicios WHERE tipo_servicio = 'Credito Fiscal';
 
 -- Si el servicio de Credito Fiscal no existe, puedes insertarlo primero
-INSERT INTO tbServicios (nombre_Servicio, descripcion, tipo_servicio, precio)
+INSERT INTO tb_Servicios (nombre_Servicio, descripcion, tipo_servicio, precio)
 VALUES ('Servicio de Credito Fiscal', 'Descripción del Servicio de Credito Fiscal', 'Credito Fiscal', 100.00)
 ON DUPLICATE KEY UPDATE nombre_Servicio = VALUES(nombre_Servicio), descripcion = VALUES(descripcion), precio = VALUES(precio);
 
 -- Verifica si el servicio de Factura Consumidor Final existe en tbServicios
-SELECT * FROM tbServicios WHERE tipo_servicio = 'Factura Consumidor Final';
+SELECT * FROM tb_Servicios WHERE tipo_servicio = 'Factura Consumidor Final';
 
 -- Si el servicio de Factura Consumidor Final no existe, puedes insertarlo primero
-INSERT INTO tbServicios (nombre_Servicio, descripcion, tipo_servicio, precio)
+INSERT INTO tb_Servicios (nombre_Servicio, descripcion, tipo_servicio, precio)
 VALUES ('Servicio de Factura Consumidor Final', 'Descripción del Servicio de Factura Consumidor Final', 'Factura Consumidor Final', 200.00)
 ON DUPLICATE KEY UPDATE nombre_Servicio = VALUES(nombre_Servicio), descripcion = VALUES(descripcion), precio = VALUES(precio);
 
 -- Verifica si el servicio de Factura Sujeto Excluido existe en tbServicios
-SELECT * FROM tbServicios WHERE tipo_servicio = 'Factura Sujeto Excluido';
+SELECT * FROM tb_Servicios WHERE tipo_servicio = 'Factura Sujeto Excluido';
 
 -- Si el servicio de Factura Sujeto Excluido no existe, puedes insertarlo primero
-INSERT INTO tbServicios (nombre_Servicio, descripcion, tipo_servicio, precio)
+INSERT INTO tb_Servicios (nombre_Servicio, descripcion, tipo_servicio, precio)
 VALUES ('Servicio de Factura Sujeto Excluido', 'Descripción del Servicio de Factura Sujeto Excluido', 'Factura Sujeto Excluido', 150.00)
 ON DUPLICATE KEY UPDATE nombre_Servicio = VALUES(nombre_Servicio), descripcion = VALUES(descripcion), precio = VALUES(precio);
 
 -- Inserción de datos en tbClientes
-INSERT INTO tbClientes (nombres_Cliente, apellidos_Cliente, correo_electronico, telefono, dui_Cliente, nit_Cliente)
+INSERT INTO tb_Clientes (nombres_Cliente, apellidos_Cliente, correo_electronico, telefono, dui_Cliente, nit_Cliente)
 VALUES ('Juan', 'Pérez', 'juan@example.com', '123456789', '00000001-1', '123456-7');
 
 -- Verificación de la existencia del cliente con idCliente = 1
-SELECT * FROM tbClientes WHERE idCliente = LAST_INSERT_ID();
+SELECT * FROM tb_Clientes WHERE idCliente = LAST_INSERT_ID();
 
 -- Si el cliente con idCliente = 1 no existe, insertarlo
-INSERT INTO tbClientes (nombres_Cliente, apellidos_Cliente, correo_electronico, telefono, dui_Cliente, nit_Cliente)
+INSERT INTO tb_Clientes (nombres_Cliente, apellidos_Cliente, correo_electronico, telefono, dui_Cliente, nit_Cliente)
 VALUES ('Juan', 'Pérez', 'juan@example.com', '123456789', '00000001-1', '123456-7')
 ON DUPLICATE KEY UPDATE nombres_Cliente = VALUES(nombres_Cliente), apellidos_Cliente = VALUES(apellidos_Cliente), correo_electronico = VALUES(correo_electronico), telefono = VALUES(telefono), dui_Cliente = VALUES(dui_Cliente), nit_Cliente = VALUES(nit_Cliente);
 
 -- Inserción de datos en tbFacturaSujetoExcluido usando los datos de tbClientes
-INSERT INTO tbFacturaSujetoExcluido (NIT_cliente, nombre_cliente, direccion_cliente, departamento_cliente, municipio_cliente, email_cliente, telefono_cliente, DUI_cliente, idServicio, tipo_servicio, monto, fecha_emision)
+INSERT INTO tb_FacturaSujetoExcluido (NIT_cliente, nombre_cliente, direccion_cliente, departamento_cliente, municipio_cliente, email_cliente, telefono_cliente, DUI_cliente, idServicio, tipo_servicio, monto, fecha_emision)
 SELECT nit_Cliente, CONCAT(nombres_Cliente, ' ', apellidos_Cliente), 'Dirección de Juan', 'Departamento de Juan', 'Municipio de Juan', correo_electronico, telefono, dui_Cliente, idServicio, tipo_servicio, 150.00, NOW()
-FROM tbClientes, tbServicios
-WHERE tbServicios.tipo_servicio = 'Factura Sujeto Excluido' AND tbClientes.idCliente = LAST_INSERT_ID();
+FROM tb_Clientes, tb_Servicios
+WHERE tb_Servicios.tipo_servicio = 'Factura Sujeto Excluido' AND tb_Clientes.id_Cliente = LAST_INSERT_ID();
 
 -- Inserción de datos en tbFacturaConsumidorFinal usando los datos de tbClientes
-INSERT INTO tbFacturaConsumidorFinal (NIT_cliente, nombre_cliente, direccion_cliente, departamento_cliente, municipio_cliente, email_cliente, telefono_cliente, DUI_cliente, idServicio, tipo_servicio, monto, fecha_emision)
+INSERT INTO tb_FacturaConsumidorFinal (NIT_cliente, nombre_cliente, direccion_cliente, departamento_cliente, municipio_cliente, email_cliente, telefono_cliente, DUI_cliente, idServicio, tipo_servicio, monto, fecha_emision)
 SELECT nit_Cliente, CONCAT(nombres_Cliente, ' ', apellidos_Cliente), 'Dirección de Juan', 'Departamento de Juan', 'Municipio de Juan', correo_electronico, telefono, dui_Cliente, idServicio, tipo_servicio, 200.00, NOW()
-FROM tbClientes, tbServicios
-WHERE tbServicios.tipo_servicio = 'Factura Consumidor Final' AND tbClientes.idCliente = LAST_INSERT_ID();
+FROM tb_Clientes, tb_Servicios
+WHERE tb_Servicios.tipo_servicio = 'Factura Consumidor Final' AND tbClientes.idCliente = LAST_INSERT_ID();
 
 -- Inserción de datos en tbComprobanteCreditoFiscal usando los datos de tbClientes
-INSERT INTO tbComprobanteCreditoFiscal (NIT, nombre, NRC, giro, departamento, municipio, direccion, email, telefono, DUI)
+INSERT INTO tb_ComprobanteCreditoFiscal (NIT, nombre, NRC, giro, departamento, municipio, direccion, email, telefono, DUI)
 SELECT nit_Cliente, CONCAT(nombres_Cliente, ' ', apellidos_Cliente), 'NRC', 'Giro', 'Departamento', 'Municipio', 'Dirección', correo_electronico, telefono, dui_Cliente
-FROM tbClientes
-WHERE idCliente = LAST_INSERT_ID();
+FROM tb_Clientes
+WHERE id_Cliente = LAST_INSERT_ID();
 
 
 
-SELECT * FROM tbFacturaSujetoExcluido;
+SELECT * FROM tb_FacturaSujetoExcluido;

@@ -4,7 +4,7 @@ CREATE DATABASE IF NOT EXISTS ASGARD;
 USE ASGARD;
 
 -- Tabla de Clientes
-CREATE TABLE tbClientes (
+CREATE TABLE tbClientes(
    idCliente INT PRIMARY KEY,
    nombres_Cliente VARCHAR(100) NOT NULL,
    apellidos_Cliente VARCHAR(100) NOT NULL,
@@ -12,11 +12,10 @@ CREATE TABLE tbClientes (
    telefono VARCHAR(15) UNIQUE,
    dui_Cliente VARCHAR(10) UNIQUE,
    nit_Cliente VARCHAR(100) UNIQUE
-   -- Más información
 );
 
 -- Tabla de Documentos Emitidos
-CREATE TABLE tbDocumentos_emitidos (
+CREATE TABLE tbDocumentos_emitidos(
    idDocumento INT PRIMARY KEY,
    tipo_Documento VARCHAR(50) NOT NULL,
    fecha_emision DATETIME NOT NULL,
@@ -26,7 +25,7 @@ CREATE TABLE tbDocumentos_emitidos (
 );
 
 -- Tabla de Servicios
-CREATE TABLE tbServicios (
+CREATE TABLE tbServicios(
    idServicio INT PRIMARY KEY,
    nombre_Servicio VARCHAR(100) NOT NULL,
    descripcion VARCHAR(255),
@@ -37,7 +36,7 @@ CREATE TABLE tbServicios (
 );
 
 -- Tabla de Relación entre Clientes y Servicios
-CREATE TABLE tbCliente_servicio (
+CREATE TABLE tbCliente_servicio(
    idCliente INT,
    idServicio INT,
    PRIMARY KEY (idCliente, idServicio),
@@ -46,16 +45,19 @@ CREATE TABLE tbCliente_servicio (
 );
 
 -- Tabla de Empleados
-CREATE TABLE tbEmpleados (
+CREATE TABLE tbEmpleados(
    idEmpleado INT PRIMARY KEY,
    nombres_Empleado VARCHAR(100) NOT NULL,
    apellidos_Empleado VARCHAR(100) NOT NULL,
-   dui_Empleado VARCHAR(100) UNIQUE
-   -- Otras columnas de información del empleado
+   dui_Empleado VARCHAR(100) UNIQUE,
+   teléfono_Empleado VARCHAR(10)
+   dui_Empleado VARCHAR(100) UNIQUE,
+   correo_electronico VARCHAR(100) UNIQUE
+   -- Más información del empleado
 );
 
 -- Tabla de Relación entre Empleados y Clientes
-CREATE TABLE tbEmpleado_cliente (
+CREATE TABLE tbEmpleado_cliente(
    idEmpleado INT,
    idCliente INT,
    PRIMARY KEY (idEmpleado, idCliente),

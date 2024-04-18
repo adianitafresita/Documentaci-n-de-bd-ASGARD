@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS ASGARD;
+DROP DATABASE IF EXISTS asgard;
 
-CREATE DATABASE IF NOT EXISTS ASGARD;
-USE ASGARD;
+CREATE DATABASE IF NOT EXISTS asgard;
+USE asgard;
 
 -- Tabla de Clientes
 CREATE TABLE tbClientes(
@@ -50,8 +50,7 @@ CREATE TABLE tbEmpleados(
    nombres_Empleado VARCHAR(100) NOT NULL,
    apellidos_Empleado VARCHAR(100) NOT NULL,
    dui_Empleado VARCHAR(100) UNIQUE,
-   teléfono_Empleado VARCHAR(10)
-   dui_Empleado VARCHAR(100) UNIQUE,
+   teléfono_Empleado VARCHAR(10),
    correo_electronico VARCHAR(100) UNIQUE
    -- Más información del empleado
 );
